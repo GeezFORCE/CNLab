@@ -4,6 +4,7 @@
 #include <sys/shm.h> 
 #include <sys/stat.h> 
 #include <sys/mman.h>
+#include<string.h>
   
 int main() 
 { 
@@ -11,16 +12,26 @@ int main()
 
     const char* name = "OS"; 
   
+    const char* msg = "a";
+    
     int shm_fd; 
   
     void* ptr; 
   
-    shm_fd = shm_open(name, O_RDONLY, 0666); 
+    shm_fd = shm_open(name, O_RDWR, 0666); 
 
     ptr = mmap(0, SIZE, PROT_READ, MAP_SHARED, shm_fd, 0); 
-  
-    printf("%s", (char*)ptr); 
-  
-    shm_unlink(name); 
+    
+    printf("%ls", (int*)ptr);
+
+    ptr = mmap(0, SIZE, PROT_WRITE, MAP_SHARED, shm_fd, 0);
+
+    int common_var = (int*)ptr;
+    printf("%ls",&common_var);
+    sprintf(ptr, "%d", common_var++ );
+
+    
+    ptr += strlen(msg); 
+   shm_unlink(name); 
     return 0; 
 }

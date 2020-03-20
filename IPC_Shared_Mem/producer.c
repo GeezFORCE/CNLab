@@ -13,10 +13,11 @@ int main()
   
     const char* name = "OS"; 
   
-    const char* message_0 = "Hello"; 
-    const char* message_1 = "World!"; 
+    int common_var = 1;  
 
     int shm_fd; 
+
+    const char* msg ="a";
   
     void* ptr; 
   
@@ -26,10 +27,15 @@ int main()
 
     ptr = mmap(0, SIZE, PROT_WRITE, MAP_SHARED, shm_fd, 0); 
   
-    sprintf(ptr, "%s", message_0); 
+    sprintf(ptr, "%d", common_var++ ); 
   
-    ptr += strlen(message_0); 
-    sprintf(ptr, "%s", message_1); 
-    ptr += strlen(message_1); 
+    ptr += strlen(msg); 
+
+    ptr = mmap(0, SIZE, PROT_READ, MAP_SHARED, shm_fd, 0);
+
+    printf("%ls", (int*)ptr);
+
+  //  sprintf(ptr, "%s", message_1); 
+  //  ptr += strlen(message_1); 
     return 0; 
 } 

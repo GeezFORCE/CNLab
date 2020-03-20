@@ -19,7 +19,7 @@ int main()
     message.mesg_type = 1; 
   
     printf("Write Data : "); 
-    gets(message.mesg_text); 
+    fgets(message.mesg_text,100,stdin); 
 
     msgsnd(msgid, &message, sizeof(message), 0); 
   
